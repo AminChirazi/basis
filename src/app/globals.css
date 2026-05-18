@@ -100,3 +100,46 @@ button.secondary {
   justify-content: space-between;
   align-items: baseline;
 }
+
+.agent {
+  margin-top: 1.5rem;
+}
+
+.agent-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.agent-suggestions button {
+  font-size: 0.85rem;
+}
+
+.agent-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.agent-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.9rem;
+}
+
+.agent-msg.you {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.agent-role {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #888;
+}
+
+.agent-steps {
+  font-size: 0.78rem;
+}

@@ -4,6 +4,7 @@ import { identityService } from "@/modules/identity";
 import { invoicingService } from "@/modules/invoicing";
 import { timeTrackingService } from "@/modules/timetracking";
 import { createProjectAction } from "./actions";
+import { AgentChat } from "./agent-chat";
 import { SignOutButton } from "./sign-out-button";
 
 function hours(minutes: number): string {
@@ -65,6 +66,8 @@ export default async function Home() {
           <SignOutButton />
         </div>
       </div>
+
+      <AgentChat />
 
       <h2>Projects</h2>
       {projects.length === 0 ? (
