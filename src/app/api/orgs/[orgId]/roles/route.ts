@@ -10,7 +10,7 @@ const roleChangeSchema = z.object({
   roleId: z.string().min(1),
 });
 
-// GET /api/orgs/:orgId/roles — list the roles defined in the org.
+// GET /api/orgs/:orgId/roles:list the roles defined in the org.
 export const GET = handler(async (_request, context: RouteContext) => {
   const { orgId } = await context.params;
 
@@ -21,7 +21,7 @@ export const GET = handler(async (_request, context: RouteContext) => {
   return ok({ roles });
 });
 
-// POST /api/orgs/:orgId/roles — assign a role to a member.
+// POST /api/orgs/:orgId/roles:assign a role to a member.
 // Owner-only: changing who holds which role is a privileged action.
 export const POST = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
@@ -54,7 +54,7 @@ export const POST = handler(async (request, context: RouteContext) => {
   return ok({ assigned: true, alreadyHeld: result.alreadyHeld });
 });
 
-// DELETE /api/orgs/:orgId/roles — remove a role from a member.
+// DELETE /api/orgs/:orgId/roles:remove a role from a member.
 // Owner-only, and guarded so an org can never lose its last owner.
 export const DELETE = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;

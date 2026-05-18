@@ -8,7 +8,7 @@ type RouteContext = {
   params: Promise<{ orgId: string; invoiceId: string }>;
 };
 
-// GET /api/orgs/:orgId/invoices/:invoiceId — one invoice with its
+// GET /api/orgs/:orgId/invoices/:invoiceId:one invoice with its
 // line items. Admin only.
 export const GET = handler(async (_request, context: RouteContext) => {
   const { orgId, invoiceId } = await context.params;
@@ -25,7 +25,7 @@ const updateStatusSchema = z.object({
   status: z.enum(INVOICE_STATUSES),
 });
 
-// PATCH /api/orgs/:orgId/invoices/:invoiceId — change the invoice
+// PATCH /api/orgs/:orgId/invoices/:invoiceId:change the invoice
 // status. Admin only.
 export const PATCH = handler(async (request, context: RouteContext) => {
   const { orgId, invoiceId } = await context.params;

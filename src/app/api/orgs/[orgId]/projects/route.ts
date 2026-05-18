@@ -6,7 +6,7 @@ import { timeTrackingService } from "@/modules/timetracking";
 
 type RouteContext = { params: Promise<{ orgId: string }> };
 
-// GET /api/orgs/:orgId/projects — list the org's projects.
+// GET /api/orgs/:orgId/projects:list the org's projects.
 // Pass ?archived=true to include archived projects.
 export const GET = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
@@ -28,7 +28,7 @@ const createProjectSchema = z.object({
   code: z.string().min(1).optional(),
 });
 
-// POST /api/orgs/:orgId/projects — create a project. Admin only.
+// POST /api/orgs/:orgId/projects:create a project. Admin only.
 export const POST = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
 

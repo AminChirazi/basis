@@ -6,7 +6,7 @@ import { timeTrackingService } from "@/modules/timetracking";
 
 type RouteContext = { params: Promise<{ orgId: string }> };
 
-// GET /api/orgs/:orgId/time-entries — list time entries.
+// GET /api/orgs/:orgId/time-entries:list time entries.
 // Pass ?projectId=... to filter to one project.
 export const GET = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
@@ -30,7 +30,7 @@ const logTimeSchema = z.object({
   billable: z.boolean().optional(),
 });
 
-// POST /api/orgs/:orgId/time-entries — log time. Any member; the
+// POST /api/orgs/:orgId/time-entries:log time. Any member; the
 // entry is attributed to the caller's own membership.
 export const POST = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
@@ -59,7 +59,7 @@ const deleteSchema = z.object({
   timeEntryId: z.string().min(1),
 });
 
-// DELETE /api/orgs/:orgId/time-entries — delete a time entry. Admin only.
+// DELETE /api/orgs/:orgId/time-entries:delete a time entry. Admin only.
 export const DELETE = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
 

@@ -6,7 +6,7 @@ import { invoicingService } from "@/modules/invoicing";
 
 type RouteContext = { params: Promise<{ orgId: string }> };
 
-// GET /api/orgs/:orgId/invoices — list invoices. Admin only.
+// GET /api/orgs/:orgId/invoices:list invoices. Admin only.
 // Pass ?status=draft|sent|paid|void to filter.
 export const GET = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
@@ -35,7 +35,7 @@ const createInvoiceSchema = z.object({
   lines: z.array(lineSchema).min(1),
 });
 
-// POST /api/orgs/:orgId/invoices — create an invoice. Admin only.
+// POST /api/orgs/:orgId/invoices:create an invoice. Admin only.
 export const POST = handler(async (request, context: RouteContext) => {
   const { orgId } = await context.params;
 
