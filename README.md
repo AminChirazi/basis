@@ -54,6 +54,23 @@ operations as tools, so an AI agent can list and create projects,
 log time, run workflows, and read the audit trail directly, over
 the Model Context Protocol.
 
+## Quickstart
+
+You need Node.js 20+ and a PostgreSQL database.
+
+```bash
+git clone https://github.com/AminChirazi/basis.git
+cd basis
+npm install
+cp .env.example .env   # then set DATABASE_URL and BETTER_AUTH_SECRET
+npm run setup          # applies migrations and seeds demo data
+npm run dev
+```
+
+`npm run setup` seeds a demo organization with a project and time
+entries, and an owner you can sign in as. The seed prints the
+credentials.
+
 ## Deployment
 
 Basis is self-hosted. You run it yourself against your own
