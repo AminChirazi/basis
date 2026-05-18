@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
+import "./globals.css";
 
 export const metadata = {
   title: "Basis",
-  description: "Back office infrastructure for AI agents.",
+  description: "Self-hosted back office infrastructure.",
 };
 
 export default function RootLayout({
