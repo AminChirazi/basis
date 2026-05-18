@@ -28,6 +28,7 @@ public surface:
 - **identity**: users, organizations, and membership
 - **rbac**: roles and access control
 - **audit**: an append-only trail of every change
+- **timetracking**: projects and the time logged against them
 
 Modules sit on a thin core (database, HTTP, pluggable auth) and are
 opinionated about the parts that barely differ between companies. The

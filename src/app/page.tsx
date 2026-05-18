@@ -4,12 +4,13 @@ export default function Home() {
       <h1>Basis</h1>
       <p>Back office infrastructure for AI agents.</p>
       <p>
-        v1 primitives: users, organizations, membership, roles, and an
-        audit trail.
+        Modules: identity, rbac, audit, and time tracking. The data
+        lives in one Postgres database you own.
       </p>
       <p>
-        API: <code>GET /api/me</code> and{" "}
-        <code>GET|POST|DELETE /api/orgs/[orgId]/roles</code>.
+        API: <code>/api/me</code>, <code>/api/orgs/[orgId]/roles</code>,{" "}
+        <code>/api/orgs/[orgId]/projects</code>, and{" "}
+        <code>/api/orgs/[orgId]/time-entries</code>.
       </p>
     </main>
   );

@@ -45,6 +45,8 @@ model Organization {
   memberships Membership[]
   roles       Role[]
   auditEvents AuditEvent[]
+  projects    Project[]
+  timeEntries TimeEntry[]
 }
 
 /// Links a user to an organization. Role assignments hang off the
@@ -57,6 +59,7 @@ model Membership {
   user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   roles          MembershipRole[]
+  timeEntries    TimeEntry[]
 
   @@unique([userId, organizationId])
   @@index([organizationId])
@@ -120,4 +123,47 @@ model AuditEvent {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@index([organizationId, createdAt])
+}
+
+// ── Module: timetracking ───────────────────────────────────────
+
+/// Something time is logged against, e.g. a client engagement or
+/// an internal initiative. Archived projects stay for reporting
+/// but drop out of pickers.
+model Project {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  /// Optional short code shown in pickers and reports.
+  code           String?
+  archived       Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  timeEntries    TimeEntry[]
+
+  @@index([organizationId])
+}
+
+/// A logged stretch of work. Belongs to the membership that logged
+/// it, so "who" is always scoped to the organization.
+model TimeEntry {
+  id              String       @id @default(cuid())
+  organizationId  String
+  membershipId    String
+  projectId       String?
+  description     String
+  startedAt       DateTime
+  /// Logged duration in minutes.
+  durationMinutes Int
+  billable        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  membership      Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  project         Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, startedAt])
+  @@index([membershipId])
+  @@index([projectId])
 }
