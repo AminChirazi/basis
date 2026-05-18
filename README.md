@@ -2,7 +2,7 @@
 
 Back office infrastructure for AI agents.
 
-Time tracking, invoicing, permissions — the operational plumbing,
+Time tracking, invoicing, permissions: the operational plumbing,
 as an open source backend you own, not a SaaS you rent.
 
 ## The shift
@@ -16,12 +16,12 @@ operational core.
 ## What this is
 
 An opinionated, open source back office you run yourself. Reliable
-primitives, exposed cleanly — you build your own front end and
+primitives, exposed cleanly, so you build your own front end and
 workflows on top, including agent-driven ones. You own the data
 and the stack.
 
 ## Status
 
 Early, and built in the open. We're validating the direction with
-real users before going deep. If it resonates, **star the repo** —
-that's how we'll know to keep going.
+real users before going deep. If it resonates, **star the repo**.
+That's how we'll know to keep going.
