@@ -26,9 +26,8 @@ export interface WorkflowResult {
  * already-completed steps are compensated in reverse order, then
  * the workflow returns `ok: false`.
  *
- * A deliberately small take on the pattern Medusa popularised: no
- * durable persistence and no retries, just ordered steps with
- * compensation.
+ * Deliberately small: no durable persistence and no retries, just
+ * ordered steps with compensation.
  */
 export async function runWorkflow<TContext>(
   name: string,

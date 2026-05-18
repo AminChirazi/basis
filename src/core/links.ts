@@ -12,8 +12,8 @@ export interface LinkRef {
  *
  * Records typed associations between data owned by different
  * modules, so modules never need a foreign key across the module
- * boundary. This is Basis's lightweight take on Medusa's module
- * links: one generic table instead of a generated table per link.
+ * boundary. One generic table holds every association, instead of
+ * a dedicated join table per pair of linked models.
  */
 export const linkService = {
   /** Associate two records. Idempotent. */

@@ -85,8 +85,9 @@ model Verification {
 
 // ── Module: identity ───────────────────────────────────────────
 
-/// A tenant. Every piece of back office data is scoped to one
-/// organization, so a single Basis deployment can host many.
+/// An organization. Every piece of back office data is scoped to
+/// one, but a deployment serves a single organization: this is
+/// internal structure, not multi-tenant isolation.
 model Organization {
   id          String       @id @default(cuid())
   /// URL-safe identifier, unique across the deployment.

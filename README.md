@@ -54,6 +54,16 @@ operations as tools, so an AI agent can list and create projects,
 log time, run workflows, and read the audit trail directly, over
 the Model Context Protocol.
 
+## Deployment
+
+Basis is self-hosted. You run it yourself against your own
+PostgreSQL database, so the data and the stack stay yours.
+
+Each deployment serves one organization: one company, one Basis
+instance, one database. The `Organization` model is internal
+structure, not multi-tenant isolation. Basis is not a shared
+service that many companies sign in to.
+
 ## Status
 
 Early, and built in the open. We're validating the direction with
