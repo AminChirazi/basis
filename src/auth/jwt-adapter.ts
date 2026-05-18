@@ -1,3 +1,9 @@
+// Worked example of an AuthAdapter for an external identity
+// provider. Basis's default auth is Better Auth (see
+// `better-auth.ts`); this adapter is here as the template to copy
+// when integrating an external IdP that issues a signed JWT
+// (Auth0, Clerk, corporate SSO, an existing auth service). It is
+// not wired in by default.
 import { cookies } from "next/headers";
 import { jwtVerify, SignJWT } from "jose";
 import type { AuthAdapter, SessionUser } from "@/auth/types";
@@ -43,7 +49,7 @@ export async function createSessionToken(
     .sign(secret());
 }
 
-/** The default auth adapter: verifies a signed JWT session cookie. */
+/** Example adapter: verifies a signed JWT session cookie. */
 export const jwtAuthAdapter: AuthAdapter = {
   async getSessionUser(): Promise<SessionUser | null> {
     const store = await cookies();

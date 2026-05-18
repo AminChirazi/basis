@@ -37,6 +37,10 @@ parts that do differ, your workflows and integrations, are adapters
 on top, over a REST and MCP surface. You build your own UI, including
 agent-driven ones, and the data lives in one Postgres database you own.
 
+Authentication is self-hosted by default with Better Auth, in that
+same database, so there is no auth vendor to depend on. Auth0, Clerk,
+or corporate SSO plug in through the auth adapter instead.
+
 Modules compose through two thin core layers. **Links** associate
 records across modules without coupling their schemas. **Workflows**
 run multi-step operations with automatic rollback: the bundled

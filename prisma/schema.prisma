@@ -19,19 +19,71 @@ datasource db {
   provider = "postgresql"
 }
 
-// ── Module: identity ───────────────────────────────────────────
+// ── Core: authentication ───────────────────────────────────────
+//
+// User, Session, Account and Verification are managed by Better
+// Auth, the default self-hosted auth provider. To use a different
+// provider (Auth0, Clerk, corporate SSO), implement the
+// AuthAdapter interface instead; these tables back the default.
 
-/// A person who can sign in. Identity only; what a user may do is
-/// decided per organization through Membership and roles.
 model User {
-  id          String       @id @default(cuid())
-  email       String       @unique
-  name        String
-  avatarUrl   String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  memberships Membership[]
+  id            String       @id @default(cuid())
+  name          String
+  email         String       @unique
+  emailVerified Boolean      @default(false)
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  memberships   Membership[]
 }
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+// ── Module: identity ───────────────────────────────────────────
 
 /// A tenant. Every piece of back office data is scoped to one
 /// organization, so a single Basis deployment can host many.
