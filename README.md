@@ -43,6 +43,13 @@ run multi-step operations with automatic rollback: the bundled
 `invoice-from-time-entries` workflow turns billable time entries into
 an invoice and links them, undoing every step if any one fails.
 
+## For AI agents
+
+Basis ships an MCP server (`npm run mcp`). It exposes the same
+operations as tools, so an AI agent can list and create projects,
+log time, run workflows, and read the audit trail directly, over
+the Model Context Protocol.
+
 ## Status
 
 Early, and built in the open. We're validating the direction with

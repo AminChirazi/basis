@@ -56,4 +56,31 @@ export const identityService = {
       },
     });
   },
+
+  /** List every organization in the deployment. */
+  async listAllOrganizations() {
+    return prisma.organization.findMany({
+      select: { id: true, slug: true, name: true },
+      orderBy: { name: "asc" },
+    });
+  },
+
+  /** List the members of an organization with their role keys. */
+  async listMembers(organizationId: string) {
+    const memberships = await prisma.membership.findMany({
+      where: { organizationId },
+      select: {
+        id: true,
+        user: { select: { id: true, name: true, email: true } },
+        roles: { select: { role: { select: { key: true } } } },
+      },
+    });
+    return memberships.map((m) => ({
+      membershipId: m.id,
+      userId: m.user.id,
+      name: m.user.name,
+      email: m.user.email,
+      roles: m.roles.map((r) => r.role.key),
+    }));
+  },
 };

@@ -14,6 +14,10 @@ export default function Home() {
         <code>workflows/invoice-from-time-entries</code>, plus{" "}
         <code>/api/me</code>.
       </p>
+      <p>
+        For AI agents, an MCP server (<code>npm run mcp</code>) exposes
+        the same operations as tools.
+      </p>
     </main>
   );
 }
