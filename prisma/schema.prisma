@@ -48,6 +48,7 @@ model Organization {
   projects    Project[]
   timeEntries TimeEntry[]
   invoices    Invoice[]
+  links       Link[]
 }
 
 /// Links a user to an organization. Role assignments hang off the
@@ -214,4 +215,28 @@ model InvoiceLine {
   invoice         Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 
   @@index([invoiceId])
+}
+
+// ── Core: module links ─────────────────────────────────────────
+
+/// A typed association between records owned by different
+/// modules. Lets modules relate data without a foreign key across
+/// the module boundary. Each end is identified by a "module:Type"
+/// string plus the record id.
+model Link {
+  id             String       @id @default(cuid())
+  organizationId String
+  fromType       String
+  fromId         String
+  toType         String
+  toId           String
+  /// Relation name, e.g. "billed_on".
+  relation       String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([fromType, fromId, toType, toId, relation])
+  @@index([fromType, fromId, relation])
+  @@index([toType, toId, relation])
+  @@index([organizationId])
 }

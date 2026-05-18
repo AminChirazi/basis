@@ -9,8 +9,10 @@ export default function Home() {
       </p>
       <p>
         API under <code>/api/orgs/[orgId]</code>: <code>roles</code>,{" "}
-        <code>projects</code>, <code>time-entries</code>, and{" "}
-        <code>invoices</code>, plus <code>/api/me</code>.
+        <code>projects</code>, <code>time-entries</code>,{" "}
+        <code>invoices</code>, and{" "}
+        <code>workflows/invoice-from-time-entries</code>, plus{" "}
+        <code>/api/me</code>.
       </p>
     </main>
   );

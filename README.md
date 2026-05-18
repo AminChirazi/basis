@@ -37,6 +37,12 @@ parts that do differ, your workflows and integrations, are adapters
 on top, over a REST and MCP surface. You build your own UI, including
 agent-driven ones, and the data lives in one Postgres database you own.
 
+Modules compose through two thin core layers. **Links** associate
+records across modules without coupling their schemas. **Workflows**
+run multi-step operations with automatic rollback: the bundled
+`invoice-from-time-entries` workflow turns billable time entries into
+an invoice and links them, undoing every step if any one fails.
+
 ## Status
 
 Early, and built in the open. We're validating the direction with

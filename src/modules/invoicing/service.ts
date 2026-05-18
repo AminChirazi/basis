@@ -125,4 +125,17 @@ export const invoicingService = {
     });
     return { ok: true as const, invoice: updated };
   },
+
+  /**
+   * Delete an invoice and its lines. Used by workflow compensation
+   * to roll back an invoice that should not have been created.
+   */
+  async deleteInvoice(
+    organizationId: string,
+    invoiceId: string,
+  ): Promise<void> {
+    await prisma.invoice.deleteMany({
+      where: { id: invoiceId, organizationId },
+    });
+  },
 };
