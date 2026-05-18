@@ -12,6 +12,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "mcp": "tsx src/mcp/server.ts",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "prisma": {
@@ -34,6 +35,7 @@
     "@types/react-dom": "^19.2.3",
     "prisma": "7.7.0",
     "tsx": "^4.19.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.0.0"
   }
 }
