@@ -47,6 +47,7 @@ model Organization {
   auditEvents AuditEvent[]
   projects    Project[]
   timeEntries TimeEntry[]
+  invoices    Invoice[]
 }
 
 /// Links a user to an organization. Role assignments hang off the
@@ -166,4 +167,51 @@ model TimeEntry {
   @@index([organizationId, startedAt])
   @@index([membershipId])
   @@index([projectId])
+}
+
+// ── Module: invoicing ──────────────────────────────────────────
+
+/// A bill issued to a client. The total is denormalized from the
+/// lines so listing invoices never needs a join.
+model Invoice {
+  id             String        @id @default(cuid())
+  organizationId String
+  /// Human-facing invoice number, unique within the organization.
+  number         String
+  /// "draft" | "sent" | "paid" | "void".
+  status         String        @default("draft")
+  /// ISO 4217 currency code, e.g. "EUR".
+  currency       String
+  clientName     String
+  clientAddress  String?
+  issueDate      DateTime
+  dueDate        DateTime?
+  notes          String?
+  /// Sum of all line amounts, in minor units (e.g. cents).
+  totalCents     Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lines          InvoiceLine[]
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+}
+
+/// One line on an invoice. Amounts are integers in minor units to
+/// avoid floating-point rounding.
+model InvoiceLine {
+  id              String  @id @default(cuid())
+  invoiceId       String
+  description     String
+  /// Whole units (hours, items). Fractional quantities are not
+  /// supported in v1.
+  quantity        Int
+  /// Price per unit in minor units (e.g. cents).
+  unitAmountCents Int
+  /// quantity * unitAmountCents, stored so totals never drift.
+  amountCents     Int
+  invoice         Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
 }

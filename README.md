@@ -29,6 +29,7 @@ public surface:
 - **rbac**: roles and access control
 - **audit**: an append-only trail of every change
 - **timetracking**: projects and the time logged against them
+- **invoicing**: invoices, line items, and status
 
 Modules sit on a thin core (database, HTTP, pluggable auth) and are
 opinionated about the parts that barely differ between companies. The
