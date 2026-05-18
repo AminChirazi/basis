@@ -55,3 +55,7 @@ the Model Context Protocol.
 Early, and built in the open. We're validating the direction with
 real users before going deep. If it resonates, **star the repo**.
 That's how we'll know to keep going.
+
+## License
+
+MIT
