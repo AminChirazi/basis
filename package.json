@@ -17,9 +17,6 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
     "@prisma/adapter-pg": "^7.7.0",
