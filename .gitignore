@@ -1,0 +1,18 @@
+node_modules/
+.next/
+out/
+build/
+
+# Secrets: never commit env files. The example is the exception.
+.env
+.env.*
+!.env.example
+
+*.log
+.DS_Store
+next-env.d.ts
+.vercel
+*.tsbuildinfo
+
+# Generated Prisma client
+src/generated/

@@ -1,0 +1,123 @@
+// Basis schema: the back office core.
+//
+// v1 ships the operational primitives every back office needs:
+// users, organizations, membership, roles, and an audit trail.
+// Time tracking and invoicing build on top of these and land in
+// later migrations.
+//
+// Models are grouped by the module that owns them. A single
+// Prisma client is generated for the whole deployment; the module
+// boundary is enforced in code (each module's service is the only
+// thing that touches its tables).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Module: identity ───────────────────────────────────────────
+
+/// A person who can sign in. Identity only; what a user may do is
+/// decided per organization through Membership and roles.
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  name        String
+  avatarUrl   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
+}
+
+/// A tenant. Every piece of back office data is scoped to one
+/// organization, so a single Basis deployment can host many.
+model Organization {
+  id          String       @id @default(cuid())
+  /// URL-safe identifier, unique across the deployment.
+  slug        String       @unique
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
+  roles       Role[]
+  auditEvents AuditEvent[]
+}
+
+/// Links a user to an organization. Role assignments hang off the
+/// membership, so a user can hold different roles in each org.
+model Membership {
+  id             String           @id @default(cuid())
+  userId         String
+  organizationId String
+  createdAt      DateTime         @default(now())
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  roles          MembershipRole[]
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+// ── Module: rbac ───────────────────────────────────────────────
+
+/// A role within an organization. Roles are database rows, not an
+/// enum, so an org can rename or add them without a migration.
+/// Code gates look roles up by `key`, never by id or display name.
+model Role {
+  id             String           @id @default(cuid())
+  organizationId String
+  /// Stable code-side identifier, e.g. "owner". Unique per org.
+  key            String
+  name           String
+  description    String?
+  /// Display order in role pickers. Lower comes first.
+  ord            Int              @default(100)
+  createdAt      DateTime         @default(now())
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  memberships    MembershipRole[]
+
+  @@unique([organizationId, key])
+}
+
+/// Join row: a membership holds a role. A membership may hold
+/// several; access checks ask whether ANY held role grants access.
+model MembershipRole {
+  id           String     @id @default(cuid())
+  membershipId String
+  roleId       String
+  /// User id of whoever granted this role. Null for seed grants.
+  /// No foreign key, so removing the granter never erases history.
+  assignedById String?
+  assignedAt   DateTime   @default(now())
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([membershipId, roleId])
+}
+
+// ── Module: audit ──────────────────────────────────────────────
+
+/// Append-only record of every state change in an organization.
+/// Written inside the same transaction as the change itself, so a
+/// self-hosted deployment has a complete, owned audit trail.
+model AuditEvent {
+  id             String       @id @default(cuid())
+  organizationId String
+  /// User id of the actor. Null for system actions.
+  actorUserId    String?
+  /// Verb describing what happened, e.g. "role.assigned".
+  action         String
+  /// Type and id of the affected entity, when there is one.
+  targetType     String?
+  targetId       String?
+  /// Extra structured context for the event.
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+}

@@ -1,9 +1,12 @@
 # Basis
 
-Back office infrastructure for AI agents.
+Building blocks for the back office.
 
-Time tracking, invoicing, permissions: the operational plumbing,
-as an open source backend you own, not a SaaS you rent.
+Basis is an open source back office platform with a built-in framework
+for customization. It lets you build the internal tools you run your
+company on, time tracking, invoicing, permissions and the operational
+core, without reinventing the boring parts and without renting a stack
+of SaaS.
 
 ## The shift
 
@@ -16,13 +19,21 @@ teams underestimate the complexity of time tracking, invoicing,
 payments, and permissions. Building it yourself is appealing right up
 until you are deep in it.
 
-## What this is
+## How it works
 
-An opinionated, open source back office you run yourself. It gives you
-direction: reliable primitives and sensible structure already decided,
-so you are not designing the operational core from scratch. You build
-your own UI and workflows on top, including agent-driven ones, and you
-own the data and the stack.
+Basis is modular. Each operational primitive is a self-contained
+module that owns its data model and exposes a service as its only
+public surface:
+
+- **identity**: users, organizations, and membership
+- **rbac**: roles and access control
+- **audit**: an append-only trail of every change
+
+Modules sit on a thin core (database, HTTP, pluggable auth) and are
+opinionated about the parts that barely differ between companies. The
+parts that do differ, your workflows and integrations, are adapters
+on top, over a REST and MCP surface. You build your own UI, including
+agent-driven ones, and the data lives in one Postgres database you own.
 
 ## Status
 
