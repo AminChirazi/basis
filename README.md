@@ -49,10 +49,18 @@ an invoice and links them, undoing every step if any one fails.
 
 ## For AI agents
 
-Basis ships an MCP server (`npm run mcp`). It exposes the same
-operations as tools, so an AI agent can list and create projects,
-log time, run workflows, and read the audit trail directly, over
-the Model Context Protocol.
+Basis is built to be run by an agent, not only used by hand.
+
+A back office agent is built in. A chat panel on the dashboard
+turns plain-language requests into real actions: ask it to log
+time, create a project, or bill an invoice, and it calls the
+modules' services as tools. It needs an Anthropic API key
+(`ANTHROPIC_API_KEY`), which you bring yourself.
+
+For external agents, Basis also ships an MCP server
+(`npm run mcp`) that exposes the same operations as tools over
+the Model Context Protocol, so Claude Desktop or any MCP client
+can drive Basis directly.
 
 ## Quickstart
 
@@ -62,7 +70,7 @@ You need Node.js 20+ and a PostgreSQL database.
 git clone https://github.com/AminChirazi/basis.git
 cd basis
 npm install
-cp .env.example .env   # then set DATABASE_URL and BETTER_AUTH_SECRET
+cp .env.example .env   # set DATABASE_URL, BETTER_AUTH_SECRET, ANTHROPIC_API_KEY
 npm run setup          # applies migrations and seeds demo data
 npm run dev
 ```
